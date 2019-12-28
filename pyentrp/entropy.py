@@ -154,7 +154,7 @@ def sample_entropy(time_series, sample_length, tolerance = None):
         template = time_series[i:(i+M+1)];#We have 'M+1' elements in the template
         rem_time_series = time_series[i+1:]
 
-        searchlist = np.nonzero(np.abs(rem_time_series - template[0]) < tolerance)[0]
+        searchlist = np.nonzero(np.abs(rem_time_series[:-M] - template[0]) < tolerance)[0]
 
         go = len(searchlist) > 0;
 
@@ -165,7 +165,6 @@ def sample_entropy(time_series, sample_length, tolerance = None):
         while go:
             length += 1
             nextindxlist = searchlist + 1;
-            nextindxlist = nextindxlist[nextindxlist < n - 1 - i]#Remove candidates too close to the end
             nextcandidates = rem_time_series[nextindxlist]
             hitlist = np.abs(nextcandidates - template[length-1]) < tolerance
             searchlist = nextindxlist[hitlist]
